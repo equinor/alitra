@@ -93,6 +93,29 @@ def test_transform_point(eul_rot, ref_translations, p_expected):
 
 
 @pytest.mark.parametrize(
+    "eul_rot, ref_translations, p_expected",
+    [
+        (
+            Euler(psi=0.0, from_="robot", to_="asset"),
+            Translation(x=0, y=0, from_="robot", to_="asset"),
+            Point.from_array(np.array([1, 2, 3]), frame="asset"),
+        ),
+    ],
+)
+def test_transform_point(eul_rot, ref_translations, p_expected):
+
+    p_robot = Point.from_array(np.array([1, 2, 3]), frame="robot")
+
+    frame_transform = FrameTransform(
+        eul_rot, ref_translations, from_=eul_rot.from_, to_=eul_rot.to_
+    )
+    p_asset = frame_transform.transform_point(p_robot, from_="robot", to_="asset")
+
+    assert p_asset.frame == p_expected.frame
+    assert np.allclose(p_expected.as_np_array(), p_asset.as_np_array())
+
+
+@pytest.mark.parametrize(
     "from_, to_, error_expected",
     [
         ("asset", "asset", True),
