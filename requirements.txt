@@ -1,0 +1,7 @@
+pytest
+mypy
+black
+isort
+numpy
+scipy
+matplotlib

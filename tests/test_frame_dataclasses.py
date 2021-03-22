@@ -1,0 +1,31 @@
+import numpy as np
+import pytest
+
+from alitra import Euler, Point, PointList, Transform, Translation
+
+
+def test_translation():
+    with pytest.raises(ValueError):
+        Translation.from_array(np.array([1, 1]), from_="robot", to_="asset")
+
+
+def test_euler():
+    with pytest.raises(ValueError):
+        Euler.from_array(np.array([1, 1]), from_="robot", to_="asset")
+
+
+def test_point():
+    with pytest.raises(ValueError):
+        Point.from_array(np.array([1, 1]), frame="robot")
+
+
+def test_point_list():
+    with pytest.raises(ValueError):
+        PointList.from_array(np.array([[1, 1], [1, 1]]), frame="robot")
+
+
+def test_transform():
+    with pytest.raises(ValueError):
+        euler = Euler(from_="robot", to_="asset")
+        translation = Translation(1, 1, from_="robot", to_="asset")
+        Transform(translation, euler, from_="asset", to_="robot")
