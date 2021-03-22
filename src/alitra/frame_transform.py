@@ -1,6 +1,6 @@
-from typing import Literal
-
-from alitra.frame_dataclasses import Euler, PointList, Transform, Translation
+from typing import Literal, Union
+import numpy as np
+from alitra.frame_dataclasses import Euler, PointList, Point, Transform, Translation
 
 
 class FrameTransform:
@@ -27,30 +27,35 @@ class FrameTransform:
         except ValueError as e:
             raise ValueError(e)
 
-    def transform_point(self, coordinates: PointList, from_, to_) -> PointList:
-        """Transforms a point from _from to _to (rotation and translation)"""
+    def transform_point(
+        self, coordinates: Union[Point, PointList], from_, to_
+    ) -> Union[Point, PointList]:
+        """Transforms a point or list of points from _from to _to (rotation and translation)"""
         if coordinates.frame != from_:
             raise ValueError(
                 f"Expected coordinates in frame {from_} "
                 + f", got coordinates in frame {coordinates.frame}"
             )
 
+        result: np.ndarray
         if from_ == self.transform.to_ and to_ == self.transform.from_:
             """Using the inverse transform"""
-            return PointList.from_array(
-                self.transform.rotation_object.apply(
-                    coordinates.as_np_array()
-                    - self.transform.translation.as_np_array(),
-                    inverse=True,
-                ),
-                frame=to_,
+            result = self.transform.rotation_object.apply(
+                coordinates.as_np_array() - self.transform.translation.as_np_array(),
+                inverse=True,
             )
 
-        if from_ == self.transform.from_ and to_ == self.transform.to_:
-            return PointList.from_array(
+        elif from_ == self.transform.from_ and to_ == self.transform.to_:
+            result = (
                 self.transform.rotation_object.apply(coordinates.as_np_array())
-                + self.transform.translation.as_np_array(),
-                frame=to_,
+                + self.transform.translation.as_np_array()
             )
         else:
             raise ValueError("Transform not specified")
+
+        if isinstance(coordinates, Point):
+            return Point.from_array(result, to_)
+        elif isinstance(coordinates, PointList):
+            return PointList.from_array(result, to_)
+        else:
+            raise ValueError("Incorrect input format. Must be Point or PointList.")
