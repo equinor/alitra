@@ -28,9 +28,18 @@ class FrameTransform:
             raise ValueError(e)
 
     def transform_point(
-        self, coordinates: Union[Point, PointList], from_, to_
+        self,
+        coordinates: Union[Point, PointList],
+        from_: Literal["robot", "asset"],
+        to_: Literal["robot", "asset"],
     ) -> Union[Point, PointList]:
-        """Transforms a point or list of points from _from to _to (rotation and translation)"""
+        """
+        Transforms a point or list of points from _from to _to (rotation and translation)
+        :param coordinates: Point or PointList of coordinates to transform.
+        :param from_: Source coordinate system. Must be "robot" or "asset" and different to "to_".
+        :param to_: Destination coordinate system. Must be "robot" or "asset" and different to "from_".
+        :return: Point or PointList with coordinates in the to_ coordinate system.
+        """
         if coordinates.frame != from_:
             raise ValueError(
                 f"Expected coordinates in frame {from_} "
