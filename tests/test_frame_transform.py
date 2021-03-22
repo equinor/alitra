@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from alitra import Euler, FrameTransform, PointList, Translation
+from alitra import Euler, FrameTransform, Point, PointList, Translation
 
 
 @pytest.mark.parametrize(
@@ -69,7 +69,7 @@ from alitra import Euler, FrameTransform, PointList, Translation
         ),
     ],
 )
-def test_transform_point(eul_rot, ref_translations, p_expected):
+def test_transform_list_of_points(eul_rot, ref_translations, p_expected):
 
     p_robot = PointList.from_array(
         np.array(
