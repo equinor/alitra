@@ -4,7 +4,9 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/python
 name: Publish to PyPI
 trigger:
-  - releases/*
+  branches:
+    - main
+    - releases/*
 pr:
   branches:
     exclude:
