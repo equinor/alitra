@@ -5,12 +5,13 @@
 name: Publish to PyPI
 trigger:
   branches:
-    - main
-    - releases/*
+    include:
+      - main
+      - releases/*
 pr:
   branches:
     exclude:
-      - /*
+      - "*"
 pool:
   vmImage: "ubuntu-latest"
 strategy:
