@@ -2,6 +2,7 @@
 # Create and test a Python package on multiple Python versions.
 # Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/python
+name: Publish to PyPI
 trigger:
   - releases/*
 pool:
@@ -10,6 +11,8 @@ strategy:
   matrix:
     Python38:
       python.version: "3.8"
+variables:
+  - group: alitra
 steps:
   - task: UsePythonVersion@0
     inputs:
@@ -23,8 +26,5 @@ steps:
 
   - script: |
       python setup.py sdist bdist_wheel
-      twine upload dist/*
+      twine upload --verbose -p $(PYPI_TOKEN) -u __token__ dist/*
     displayName: "Build and publish"
-    env:
-      TWINE_USERNAME: __token__
-      TWINE_PASSWORD: $(PYPI_TOKEN)
