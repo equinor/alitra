@@ -4,7 +4,12 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/python
 name: Publish to PyPI
 trigger:
-  - releases/*
+  branches:
+    - releases/*
+pr:
+  branches:
+    exclude:
+      - /*
 pool:
   vmImage: "ubuntu-latest"
 strategy:
