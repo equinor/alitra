@@ -3,6 +3,7 @@ import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import numpy as np
 
+from os import path
 from alitra import AlignFrames, Point, PointList
 
 """ Manual alignment. Rotation about the z-axis:
@@ -15,8 +16,9 @@ load it into python as in this example.
 
 
 def manual_alignment_example() -> None:
-    path_to_map = "./examples/localization-inspector.png"
-    path_to_echo_img = "./examples/Echo.png"
+    here: str = path.dirname(__file__) + "/"
+    path_to_map: str = here + "localization-inspector.png"
+    path_to_echo_img: str = here + "Echo.png"
 
     map = plt.imread(path_to_map)
     fig, axs = plt.subplots(2)
