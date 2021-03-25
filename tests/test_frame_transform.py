@@ -1,7 +1,8 @@
 import numpy as np
 import pytest
 
-from alitra import Euler, FrameTransform, Point, PointList, Translation
+from alitra.frame_dataclasses import Euler, Point, PointList, Quaternion, Translation
+from alitra.frame_transform import FrameTransform
 
 
 @pytest.mark.parametrize(
@@ -154,3 +155,36 @@ def test_transform_point_error(from_, to_, error_expected):
             frame_transform.transform_point(p_robot, from_=from_, to_=to_)
     else:
         frame_transform.transform_point(p_robot, from_=from_, to_=to_)
+
+
+@pytest.mark.parametrize(
+    "quaternion, rotation_quaternion, expected",
+    [
+        (
+            Quaternion(x=0, y=0, z=0, w=1.0, frame="robot"),
+            Quaternion(x=0, y=0, z=1, w=0, frame="robot"),
+            Quaternion(x=0, y=0, z=1, w=0, frame="asset"),
+        ),
+        (
+            Quaternion(x=0, y=0, z=0, w=1.0, frame="asset"),
+            Quaternion(x=0, y=0, z=1, w=0, frame="robot"),
+            Quaternion(x=0, y=0, z=1, w=0, frame="robot"),
+        ),
+    ],
+)
+def test_transform_quaternion(quaternion, rotation_quaternion, expected):
+    translation: Translation = Translation(
+        x=0, y=0, from_=quaternion.frame, to_=expected.frame, frame=expected.frame
+    )
+    frame_transform: FrameTransform = FrameTransform(
+        translation=translation,
+        quaternion=rotation_quaternion,
+        from_=quaternion.frame,
+        to_=expected.frame,
+    )
+
+    rotated_quaternion: Quaternion = frame_transform.transform_quaternion(
+        quaternion=quaternion, from_=quaternion.frame, to_=expected.frame
+    )
+
+    assert rotated_quaternion == expected
