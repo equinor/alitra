@@ -84,7 +84,10 @@ def test_transform_list_of_points(eul_rot, ref_translations, p_expected):
     )
 
     frame_transform = FrameTransform(
-        eul_rot, ref_translations, from_=eul_rot.from_, to_=eul_rot.to_
+        euler=eul_rot,
+        translation=ref_translations,
+        from_=eul_rot.from_,
+        to_=eul_rot.to_,
     )
     p_asset = frame_transform.transform_point(p_robot, from_="robot", to_="asset")
 
@@ -107,7 +110,10 @@ def test_transform_point(eul_rot, ref_translations, p_expected):
     p_robot = Point.from_array(np.array([1, 2, 3]), frame="robot")
 
     frame_transform = FrameTransform(
-        eul_rot, ref_translations, from_=eul_rot.from_, to_=eul_rot.to_
+        euler=eul_rot,
+        translation=ref_translations,
+        from_=eul_rot.from_,
+        to_=eul_rot.to_,
     )
     p_asset = frame_transform.transform_point(p_robot, from_="robot", to_="asset")
 
@@ -140,7 +146,7 @@ def test_transform_point_error(from_, to_, error_expected):
     translation = Translation(x=0, y=0, from_="robot", to_="asset")
 
     frame_transform = FrameTransform(
-        eul_rot, translation, from_=eul_rot.from_, to_=eul_rot.to_
+        euler=eul_rot, translation=translation, from_=eul_rot.from_, to_=eul_rot.to_
     )
 
     if error_expected:

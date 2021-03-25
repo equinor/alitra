@@ -77,7 +77,10 @@ from alitra import AlignFrames, Euler, FrameTransform, PointList, Translation
 def test_align_frames(eul_rot, ref_translations, p_robot, rotation_axes):
     rotations_c2to_c1 = eul_rot.as_np_array()
     c_frame_transform = FrameTransform(
-        eul_rot, ref_translations, from_=eul_rot.from_, to_=eul_rot.to_
+        euler=eul_rot,
+        translation=ref_translations,
+        from_=eul_rot.from_,
+        to_=eul_rot.to_,
     )
     ref_translation_array = ref_translations.as_np_array()
     p_asset = c_frame_transform.transform_point(p_robot, from_="robot", to_="asset")
@@ -153,4 +156,4 @@ def test_align_frames(eul_rot, ref_translations, p_robot, rotation_axes):
 )
 def test_align_frames_exceptions(p_robot, p_asset, rotation_frame):
     with pytest.raises(ValueError):
-        AlignFrames.align_frames(p_robot, p_asset, rotation_frame)
+        AlignFrames.align_frames(p_1=p_robot, p_2=p_asset, rot_axes=rotation_frame)

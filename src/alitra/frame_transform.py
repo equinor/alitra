@@ -1,6 +1,14 @@
 from typing import Literal, Union
 import numpy as np
-from alitra.frame_dataclasses import Euler, PointList, Point, Transform, Translation
+
+from alitra.frame_dataclasses import (
+    Euler,
+    PointList,
+    Point,
+    Transform,
+    Translation,
+    Quaternion,
+)
 
 
 class FrameTransform:
@@ -15,17 +23,30 @@ class FrameTransform:
 
     def __init__(
         self,
-        euler: Euler,
         translation: Translation,
         from_: Literal["robot", "asset"],
         to_: Literal["robot", "asset"],
+        euler: Euler = None,
+        quaternion: Quaternion = None,
     ):
-        try:
-            self.transform = Transform(
-                translation=translation, euler=euler, from_=from_, to_=to_
-            )
-        except ValueError as e:
-            raise ValueError(e)
+        if euler is None and quaternion is None:
+            raise ValueError("Euler or quaternion must be set to describe the rotation")
+        elif euler and quaternion:
+            raise ValueError("Specify only one rotation, either euler or quaternion.")
+        elif euler:
+            try:
+                self.transform = Transform(
+                    translation=translation, euler=euler, from_=from_, to_=to_
+                )
+            except ValueError as e:
+                raise ValueError(e)
+        elif quaternion:
+            try:
+                self.transform = Transform(
+                    translation=translation, quaternion=quaternion, from_=from_, to_=to_
+                )
+            except ValueError as e:
+                raise ValueError(e)
 
     def transform_point(
         self,
