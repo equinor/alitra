@@ -1,7 +1,14 @@
 import numpy as np
 import pytest
 
-from alitra import Euler, Point, PointList, Transform, Translation, Quaternion
+from alitra import (
+    Euler,
+    Point,
+    PointList,
+    Transform,
+    Translation,
+    Quaternion,
+)
 
 
 def test_translation():
@@ -33,4 +40,10 @@ def test_transform():
     with pytest.raises(ValueError):
         euler = Euler(from_="robot", to_="asset")
         translation = Translation(1, 1, from_="robot", to_="asset")
-        Transform(translation, euler, from_="asset", to_="robot")
+        Transform(translation, euler=euler, from_="asset", to_="robot")
+
+
+def test_transform_without_rotation():
+    with pytest.raises(ValueError):
+        translation = Translation(1, 1, from_="robot", to_="asset")
+        Transform(translation=translation, from_="asset", to_="robot")

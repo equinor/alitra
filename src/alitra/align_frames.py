@@ -67,7 +67,7 @@ class AlignFrames:
 
         try:
             frame_transform = FrameTransform(
-                euler, translations, from_=p_1.frame, to_=p_2.frame
+                euler=euler, translation=translations, from_=p_1.frame, to_=p_2.frame
             )
         except ValueError as e:
             raise ValueError(e)

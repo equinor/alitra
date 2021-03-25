@@ -9,32 +9,39 @@ from scipy.spatial.transform import Rotation
 
 @dataclass
 class Transform:
-    """A transform object that describe the transformation between two frames.
-    Translations must be expressed in the (to_) frame"""
+    """
+    A transform object that describe the transformation between two frames.
+    Euler or quaternion must be provided to perform a rotation. If no rotation is required specify the unit quaternion
+    or zero Euler angles. Translations must be expressed in the (to_) frame
+    """
 
     translation: Translation
-    euler: Euler
     from_: Literal["robot", "asset"]
     to_: Literal["asset", "robot"]
-    rotation_object: Rotation = Rotation.from_euler("zyx", [0, 0, 0])
+    rotation_object: Rotation = None
+    euler: Euler = None
+    quaternion: Quaternion = None
 
     def __post_init__(self):
-        if not self.translation.from_ == self.euler.from_ == self.from_:
+        if (
+            not self.translation.from_ == self.from_
+            and not self.translation.to_ == self.to_
+            or not self.to_ == self.translation.frame
+        ):
             raise ValueError(
-                f"The from_ frames are not equal: ({self.euler.from_}), ({self.from_}), ({self.translation.from_})"
+                f"The from_ frames or to_ frames of translation and transform object are not equal."
             )
-        if not self.translation.to_ == self.euler.to_ == self.to_:
-            raise ValueError(
-                f"The to_ frames are not equal: ({self.euler.to_}),({self.to_}),({self.translation.to_})"
+
+        if self.euler is None and self.quaternion is None:
+            raise ValueError("Euler or quaternion must be set to describe the rotation")
+        elif self.euler is not None and self.quaternion is not None:
+            raise ValueError("Euler and quaternion cannot be set at the same time")
+        elif self.euler:
+            self.rotation_object = Rotation.from_euler(
+                "zyx", self.euler.as_np_array(), degrees=False
             )
-        if not self.to_ == self.translation.frame:
-            raise ValueError(
-                f"The to_ frame ({self.to_}) does not match"
-                + f"the translation frame ({self.translation.frame})"
-            )
-        self.rotation_object = Rotation.from_euler(
-            "zyx", self.euler.as_np_array(), degrees=False
-        )
+        elif self.quaternion:
+            self.rotation_object = Rotation.from_quat(self.quaternion.as_np_array())
 
 
 @dataclass
