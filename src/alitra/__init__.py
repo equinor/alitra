@@ -8,7 +8,7 @@ asset coordinate-frame.
 
 >>> import numpy as np
 >>> from alitra.align_frames import AlignFrames
->>> from alitra.frame_dataclasses import Euler, PointList, Translation
+>>> from alitra.frame_dataclasses import Euler, Quaternion, PointList, Translation
 >>> from alitra.frame_transform import FrameTransform
 
 Setting up rotations, translations and points for transformation
@@ -36,5 +36,12 @@ between the two frames.
 """
 
 from alitra.align_frames import AlignFrames
-from alitra.frame_dataclasses import Euler, Point, PointList, Transform, Translation
+from alitra.frame_dataclasses import (
+    Euler,
+    Quaternion,
+    Point,
+    PointList,
+    Transform,
+    Translation,
+)
 from alitra.frame_transform import FrameTransform
