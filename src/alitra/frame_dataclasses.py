@@ -105,6 +105,33 @@ class Euler:
 
 
 @dataclass
+class Quaternion:
+    frame: Literal["robot", "asset"]
+    x: float = 0
+    y: float = 0
+    z: float = 0
+    w: float = 1
+
+    def as_np_array(self) -> np.ndarray:
+        return np.array([self.x, self.y, self.z, self.w], dtype=float)
+
+    @staticmethod
+    def from_array(
+        quaternion: np.ndarray,
+        frame: Literal["robot", "asset"],
+    ) -> Quaternion:
+        if quaternion.shape != (4,):
+            raise ValueError("Quaternion array must have shape (4,)")
+        return Quaternion(
+            x=quaternion[0],
+            y=quaternion[1],
+            z=quaternion[2],
+            w=quaternion[3],
+            frame=frame,
+        )
+
+
+@dataclass
 class Translation:
     """Translations should be expressed in the to_ frame, which are typically the asset frame"""
 
