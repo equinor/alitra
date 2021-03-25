@@ -1,5 +1,6 @@
 from typing import Literal, Union
 import numpy as np
+from scipy.spatial.transform.rotation import Rotation
 
 from alitra.frame_dataclasses import (
     Euler,
@@ -89,3 +90,26 @@ class FrameTransform:
             return PointList.from_array(result, to_)
         else:
             raise ValueError("Incorrect input format. Must be Point or PointList.")
+
+    def transform_quaternion(
+        self,
+        quaternion: Quaternion,
+        from_: Literal["robot", "asset"],
+        to_: Literal["robot", "asset"],
+    ) -> Quaternion:
+        quaternion_from: Rotation = Rotation.from_quat(quaternion.as_np_array())
+
+        if not isinstance(quaternion, Quaternion):
+            raise ValueError("Incorrect input format. Must be Quaternion.")
+
+        if from_ == self.transform.to_ and to_ == self.transform.from_:
+            """Using the inverse transform"""
+
+            quaternion_to = quaternion_from * self.transform.rotation_object.inv()
+        elif from_ == self.transform.from_ and to_ == self.transform.to_:
+            quaternion_to = quaternion_from * self.transform.rotation_object
+        else:
+            raise ValueError("Transform not specified")
+
+        result: Quaternion = Quaternion.from_array(quaternion_to.as_quat(), frame=to_)
+        return result
