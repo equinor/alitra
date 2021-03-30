@@ -1,13 +1,12 @@
 from typing import Literal, Union
+
 import numpy as np
 from scipy.spatial.transform.rotation import Rotation
 
 from alitra.frame_dataclasses import (
-    Euler,
     PointList,
     Point,
     Transform,
-    Translation,
     Quaternion,
 )
 
@@ -22,32 +21,8 @@ class FrameTransform:
     :param translation: translation from frame (from_) to frame (to_), expressed in the (to_) frame.
     """
 
-    def __init__(
-        self,
-        translation: Translation,
-        from_: Literal["robot", "asset"],
-        to_: Literal["robot", "asset"],
-        euler: Euler = None,
-        quaternion: Quaternion = None,
-    ):
-        if euler is None and quaternion is None:
-            raise ValueError("Euler or quaternion must be set to describe the rotation")
-        elif euler and quaternion:
-            raise ValueError("Specify only one rotation, either euler or quaternion.")
-        elif euler:
-            try:
-                self.transform = Transform(
-                    translation=translation, euler=euler, from_=from_, to_=to_
-                )
-            except ValueError as e:
-                raise ValueError(e)
-        elif quaternion:
-            try:
-                self.transform = Transform(
-                    translation=translation, quaternion=quaternion, from_=from_, to_=to_
-                )
-            except ValueError as e:
-                raise ValueError(e)
+    def __init__(self, transform: Transform):
+        self.transform = transform
 
     def transform_point(
         self,

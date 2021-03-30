@@ -19,8 +19,6 @@ class Transform:
     from_: Literal["robot", "asset"]
     to_: Literal["asset", "robot"]
     rotation_object: Rotation = None
-    euler: Euler = None
-    quaternion: Quaternion = None
 
     def __post_init__(self):
         if (
@@ -32,16 +30,35 @@ class Transform:
                 f"The from_ frames or to_ frames of translation and transform object are not equal."
             )
 
-        if self.euler is None and self.quaternion is None:
-            raise ValueError("Euler or quaternion must be set to describe the rotation")
-        elif self.euler is not None and self.quaternion is not None:
-            raise ValueError("Euler and quaternion cannot be set at the same time")
-        elif self.euler:
-            self.rotation_object = Rotation.from_euler(
-                "zyx", self.euler.as_np_array(), degrees=False
-            )
-        elif self.quaternion:
-            self.rotation_object = Rotation.from_quat(self.quaternion.as_np_array())
+    @staticmethod
+    def from_euler_ZYX(
+        translation: Translation,
+        from_: Literal["robot", "asset"],
+        to_: Literal["asset", "robot"],
+        euler: Euler,
+    ):
+        rotation_object = Rotation.from_euler("ZYX", euler.as_np_array())
+        return Transform(
+            translation=translation,
+            from_=from_,
+            to_=to_,
+            rotation_object=rotation_object,
+        )
+
+    @staticmethod
+    def from_quat(
+        translation: Translation,
+        from_: Literal["robot", "asset"],
+        to_: Literal["asset", "robot"],
+        quat: Quaternion,
+    ):
+        rotation_object = Rotation.from_quat(quat.as_np_array())
+        return Transform(
+            translation=translation,
+            from_=from_,
+            to_=to_,
+            rotation_object=rotation_object,
+        )
 
 
 @dataclass

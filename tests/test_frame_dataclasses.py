@@ -40,7 +40,7 @@ def test_transform():
     with pytest.raises(ValueError):
         euler = Euler(from_="robot", to_="asset")
         translation = Translation(1, 1, from_="robot", to_="asset")
-        Transform(translation, euler=euler, from_="asset", to_="robot")
+        Transform.from_euler_ZYX(translation, euler=euler, from_="asset", to_="robot")
 
 
 def test_transform_without_rotation():
