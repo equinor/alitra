@@ -132,21 +132,6 @@ class AlignFrames:
             edges_2 = np.vstack([edges_2, np.array([[1, 0, 0]])])
         return edges_1, edges_2
 
-    @staticmethod
-    def _set_non_rotating_angles_to_zero(euler: Euler, rot_axes) -> Euler:
-        """Ensures that rotation-angles in axes that are not rotated about are zero
-        (scipy align vectors, always use 3 axis of rotation. If the problem is properly specific, the rotations
-        that are set to zero here should already be near zero before this operation"""
-        if rot_axes == "z":
-            euler.phi = 0
-            euler.theta = 0
-        if rot_axes == "y":
-            euler.psi = 0
-            euler.theta = 0
-        if rot_axes == "x":
-            euler.psi = 0
-            euler.phi = 0
-        return euler
 
     @staticmethod
     def _check_rsme_treshold(
