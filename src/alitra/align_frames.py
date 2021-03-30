@@ -97,7 +97,11 @@ class AlignFrames:
         index = 0
         for i in range(0, n_points - 1):
             for j in range(i + 1, n_points):
-                edges_1[index, :] = np.array([p_1_arr[i] - p_1_arr[j],])
+                edges_1[index, :] = np.array(
+                    [
+                        p_1_arr[i] - p_1_arr[j],
+                    ]
+                )
                 index = index + 1
         return edges_1
 
