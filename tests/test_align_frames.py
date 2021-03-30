@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from alitra import AlignFrames, Euler, FrameTransform, PointList, Translation
+from alitra import AlignFrames, Euler, FrameTransform, PointList, Translation, Transform
 
 
 @pytest.mark.parametrize(
@@ -76,21 +76,24 @@ from alitra import AlignFrames, Euler, FrameTransform, PointList, Translation
 )
 def test_align_frames(eul_rot, ref_translations, p_robot, rotation_axes):
     rotations_c2to_c1 = eul_rot.as_np_array()
-    c_frame_transform = FrameTransform(
+    transform = Transform.from_euler_ZYX(
         euler=eul_rot,
         translation=ref_translations,
         from_=eul_rot.from_,
         to_=eul_rot.to_,
     )
+    c_frame_transform = FrameTransform(transform)
     ref_translation_array = ref_translations.as_np_array()
     p_asset = c_frame_transform.transform_point(p_robot, from_="robot", to_="asset")
-    transform = AlignFrames.align_frames(p_robot, p_asset, rotation_axes)
+    frame_transform = AlignFrames.align_frames(p_robot, p_asset, rotation_axes)
 
     assert np.allclose(
-        transform.transform.translation.as_np_array(), ref_translation_array
+        frame_transform.transform.translation.as_np_array(), ref_translation_array
     )
 
-    assert np.allclose(transform.transform.euler.as_np_array(), rotations_c2to_c1)
+    assert np.allclose(
+        frame_transform.transform.rotation_object.as_euler("ZYX"), rotations_c2to_c1
+    )
 
     p_robot_noisy = PointList.from_array(
         p_robot.as_np_array()
@@ -113,7 +116,7 @@ def test_align_frames(eul_rot, ref_translations, p_robot, rotation_axes):
     )
 
     translation_arr_noise = transform_noisy.transform.translation.as_np_array()
-    euler_arr_noise = transform_noisy.transform.euler.as_np_array()
+    euler_arr_noise = transform_noisy.transform.rotation_object.as_euler("ZYX")
     rotations = np.absolute(euler_arr_noise - rotations_c2to_c1)
     translations = np.absolute(translation_arr_noise - ref_translation_array)
     assert np.any(rotations > 0.3) == False

@@ -4,7 +4,7 @@ import numpy as np
 from numpy.linalg import norm  # type: ignore
 from scipy.spatial.transform import Rotation
 
-from alitra.frame_dataclasses import Euler, PointList, Translation
+from alitra.frame_dataclasses import PointList, Translation, Transform
 from alitra.frame_transform import FrameTransform
 
 
@@ -57,18 +57,15 @@ class AlignFrames:
             from_=p_1.frame,
             to_=p_2.frame,
         )  # type: ignore
-
-        euler: Euler = Euler.from_array(
-            rotation_object.as_euler("zyx"),
+        transform = Transform(
             from_=p_1.frame,
             to_=p_2.frame,
+            translation=translations,
+            rotation_object=rotation_object,
         )
-        euler = AlignFrames._set_non_rotating_angles_to_zero(euler, rot_axes)
 
         try:
-            frame_transform = FrameTransform(
-                euler=euler, translation=translations, from_=p_1.frame, to_=p_2.frame
-            )
+            frame_transform: FrameTransform = FrameTransform(transform)
         except ValueError as e:
             raise ValueError(e)
         try:
@@ -100,11 +97,7 @@ class AlignFrames:
         index = 0
         for i in range(0, n_points - 1):
             for j in range(i + 1, n_points):
-                edges_1[index, :] = np.array(
-                    [
-                        p_1_arr[i] - p_1_arr[j],
-                    ]
-                )
+                edges_1[index, :] = np.array([p_1_arr[i] - p_1_arr[j],])
                 index = index + 1
         return edges_1
 
@@ -131,7 +124,6 @@ class AlignFrames:
             edges_1 = np.vstack([edges_1, np.array([[1, 0, 0]])])
             edges_2 = np.vstack([edges_2, np.array([[1, 0, 0]])])
         return edges_1, edges_2
-
 
     @staticmethod
     def _check_rsme_treshold(
