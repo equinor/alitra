@@ -61,7 +61,7 @@ from alitra.frame_transform import FrameTransform
             ),
         ),
         (
-            Euler(phi=1 * 0.2, theta=1, psi=0.4, from_="robot", to_="asset"),
+            Euler(theta=1 * 0.2, phi=1, psi=0.4, from_="robot", to_="asset"),
             Translation(x=0, y=10, z=2, from_="robot", to_="asset"),
             PointList.from_array(
                 np.array(
@@ -78,7 +78,6 @@ from alitra.frame_transform import FrameTransform
     ],
 )
 def test_transform_list_of_points(eul_rot, ref_translations, p_expected):
-
     p_robot = PointList.from_array(
         np.array(
             [

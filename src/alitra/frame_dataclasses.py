@@ -103,17 +103,17 @@ class PointList:
 
 @dataclass
 class Euler:
-    """Euler angles where (psi,phi,theta) is rotation about the z-,y-, and x- axis respectively. as_array and from_array
-    are both ordered by rotation about z,y,x. That is [psi,phi,theta]"""
+    """Euler angles where (psi,theta,phi) is rotation about the z-,y-, and x- axis respectively as_array and from_array
+    are both ordered by rotation about z,y,x. That is [psi,theta,phi]"""
 
     from_: Literal["robot", "asset"]
     to_: Literal["robot", "asset"]
     psi: float = 0
-    phi: float = 0
     theta: float = 0
+    phi: float = 0
 
     def as_np_array(self) -> np.ndarray:
-        return np.array([self.psi, self.phi, self.theta], dtype=float)
+        return np.array([self.psi, self.theta, self.phi], dtype=float)
 
     @staticmethod
     def from_array(
@@ -124,7 +124,7 @@ class Euler:
         if rotations.shape != (3,):
             raise ValueError("Coordinate_list should have shape (3,)")
         return Euler(
-            psi=rotations[0], phi=rotations[1], theta=rotations[2], from_=from_, to_=to_
+            psi=rotations[0], theta=rotations[1], phi=rotations[2], from_=from_, to_=to_
         )
 
 

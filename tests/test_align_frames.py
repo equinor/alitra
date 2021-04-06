@@ -33,7 +33,7 @@ from alitra import AlignFrames, Euler, FrameTransform, PointList, Translation, T
             "z",
         ),
         (
-            Euler(theta=np.pi * 0.9, from_="robot", to_="asset"),
+            Euler(phi=np.pi * 0.9, from_="robot", to_="asset"),
             Translation(x=1, y=10, from_="robot", to_="asset"),
             PointList.from_array(
                 np.array([[10, 0, 0], [5, 2, 0], [7, 5, 0], [3, 5, 0]]), frame="robot"
@@ -65,7 +65,7 @@ from alitra import AlignFrames, Euler, FrameTransform, PointList, Translation, T
             "z",
         ),
         (
-            Euler(phi=np.pi * 0.2, from_="robot", to_="asset"),
+            Euler(theta=np.pi * 0.2, from_="robot", to_="asset"),
             Translation(x=1, y=10, z=2, from_="robot", to_="asset"),
             PointList.from_array(
                 np.array([[0, 1, 2], [5, 2, 0], [7, 5, 0], [3, 5, 0]]), frame="robot"
