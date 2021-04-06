@@ -18,14 +18,14 @@ class AlignFrames:
     ) -> FrameTransform:
         """Let p_1 be fixed local coordinate frame that the robot operate in, and p_2 be
         in the asset-fixed global coordinate system. Further, let the relationship between the two
-        reference systems be described in the _to frame be : p_1 = rotation_object(euler,p_2) + translations,
-        using the zyx Euler angle rotation convention. This function finds the rotations and translations
-        by matching the two coordinate systems, and represent the transformation through a CoordinateFrame object.
+        reference systems be described in the _to frame be : p_1 = rotation_object.apply(p_2) + translation,
+        This function finds the rotation_object and translation by matching the two coordinate systems,
+        and represent the transformation through a CoordinateFrame object.
         For robustness it is adviced to use more than 2 points in frame alignment and having using points with some
         distance to each other.
         :param p_1: Coordinates in the fixed local reference frame (local robot map).
         :param p_2: Coordinates in the fixed global reference frame (asset system).
-        :param rot_axes: Axis of rotation. For rotations in the xy frame (most common), this is set to 'z'
+        :param rot_axes: Axis of rotation. For rotations in the xy plane (most common), this is set to 'z'
         :param rsmd_treshold: The root mean square distance treshold,
         for the coordinate fitting error in matching the two coordinate systems.
         """

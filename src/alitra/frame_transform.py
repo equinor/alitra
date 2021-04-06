@@ -13,12 +13,11 @@ from alitra.frame_dataclasses import (
 
 class FrameTransform:
     """Let (from_) be the fixed local coordinate frame that the robot operate in, and (to_) be
-     in the asset-fixed global coordinate system. Further, let the relationship between the two
-     reference systems be described by : p_to = rot_transform(euler_angles)*p_from + translation,
-      using the zyx Euler angle rotation convention. This object allows for transform between the frames
-      (from_) and (to_). Can be rewritten to accommodate for more frames.
-    :param euler: Euler angles transform (zyx convention).
-    :param translation: translation from frame (from_) to frame (to_), expressed in the (to_) frame.
+    in the asset-fixed global coordinate system. Further, let the relationship between the two
+    reference systems be described by : p_to = rotation_object.apply(p_from) + translation.
+    This object allows for transform between the frames (from_) and (to_). Can be rewritten to
+    accommodate for multiple frames.
+    :param transform: A transform dataclass object
     """
 
     def __init__(self, transform: Transform):
