@@ -20,7 +20,7 @@ class AlignFrames:
         in the asset-fixed global coordinate system. Further, let the relationship between the two
         reference systems be described in the _to frame be : p_1 = rotation_object.apply(p_2) + translation,
         This function finds the rotation_object and translation by matching the two coordinate systems,
-        and represent the transformation through a CoordinateFrame object.
+        and represent the transformation through a FrameTransform object.
         For robustness it is adviced to use more than 2 points in frame alignment and having using points with some
         distance to each other.
         :param p_1: Coordinates in the fixed local reference frame (local robot map).
