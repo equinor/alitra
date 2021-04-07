@@ -13,7 +13,7 @@ def quaternion_to_euler(
     :param degrees: Set to true if the resulting Euler angles should be in degrees. Default is radians.
     :return: Euler object.
     """
-    rotation_object: Rotation = Rotation(quaternion.as_np_array())
+    rotation_object: Rotation = Rotation.from_quat(quaternion.as_np_array())
     euler: Euler = Euler.from_array(
         rotation_object.as_euler(sequence, degrees=degrees),
         from_="robot",
