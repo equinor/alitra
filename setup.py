@@ -5,7 +5,7 @@ setup(
     description="Simple alignment and transformation between coordinate frames",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    version="1.0.8",
+    version="1.0.9",
     author="Equinor ASA",
     author_email="arnts@equinor.com, euel@equinor.com, chjo@equinor.com",
     license="MIT",
