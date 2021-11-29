@@ -24,7 +24,8 @@ jobs:
         run: |
           pip install black mypy
           black --check .
-          mypy .
+          mypy src/alitra
+          mypy tests
       - name: Test with pytest
         run: |
           pip install pytest
