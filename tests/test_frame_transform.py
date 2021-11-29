@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 import pytest
 
@@ -106,9 +108,9 @@ def test_transform_list_of_points(eul_rot, ref_translations, p_expected):
     "eul_rot, ref_translations, p_expected",
     [
         (
-            Euler(psi=0.0, from_="robot", to_="asset"),
-            Translation(x=0, y=0, from_="robot", to_="asset"),
-            Point.from_array(np.array([1, 2, 3]), frame="asset"),
+            Euler(psi=math.pi / 2.0, from_="robot", to_="asset"),
+            Translation(x=1, y=2, from_="robot", to_="asset"),
+            Point.from_array(np.array([-1, 3, 3]), frame="asset"),
         ),
     ],
 )
