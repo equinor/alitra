@@ -8,8 +8,8 @@ from alitra.frame_dataclasses import (
     Point,
     PointList,
     Quaternion,
-    Translation,
     Transform,
+    Translation,
 )
 from alitra.frame_transform import FrameTransform
 
@@ -130,11 +130,29 @@ def test_transform_point(eul_rot, ref_translations, p_expected):
     assert np.allclose(p_expected.as_np_array(), p_asset.as_np_array())
 
 
+def test_no_transformation_when_equal_frames():
+    p_robot = Point.from_array(np.array([1, 2, 3]), frame="robot")
+    p_expected = Point.from_array(np.array([1, 2, 3]), frame="robot")
+
+    transform = Transform.from_euler_ZYX(
+        euler=Euler(psi=1.0, from_="robot", to_="asset"),
+        translation=Translation(x=2, y=3, from_="robot", to_="asset"),
+        from_="robot",
+        to_="asset",
+    )
+
+    frame_transform = FrameTransform(transform)
+    point = frame_transform.transform_point(p_robot, from_="robot", to_="robot")
+
+    assert point.frame == p_expected.frame
+    assert np.allclose(p_expected.as_np_array(), point.as_np_array())
+
+
 @pytest.mark.parametrize(
     "from_, to_, error_expected",
     [
-        ("asset", "asset", True),
-        ("robot", "robot", True),
+        ("asset", "asset", False),
+        ("robot", "robot", False),
         ("robot", "asset", False),
         ("asset", "robot", True),
     ],

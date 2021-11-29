@@ -3,12 +3,7 @@ from typing import Literal, Union
 import numpy as np
 from scipy.spatial.transform.rotation import Rotation
 
-from alitra.frame_dataclasses import (
-    PointList,
-    Point,
-    Transform,
-    Quaternion,
-)
+from alitra.frame_dataclasses import Point, PointList, Quaternion, Transform
 
 
 class FrameTransform:
@@ -36,6 +31,9 @@ class FrameTransform:
         :param to_: Destination coordinate system. Must be "robot" or "asset" and different to "from_".
         :return: Point or PointList with coordinates in the to_ coordinate system.
         """
+        if from_ == to_:
+            return coordinates
+
         if coordinates.frame != from_:
             raise ValueError(
                 f"Expected coordinates in frame {from_} "
