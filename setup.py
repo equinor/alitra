@@ -23,7 +23,12 @@ setup(
         "Topic :: Software Development :: Libraries",
     ],
     include_package_data=True,
-    install_requires=["scipy", "numpy"],
+    install_requires=["scipy", "numpy", "dacite"],
     python_requires=">=3.8",
-    tests_require=["pytest"],
+    extras_require={
+        "dev": [
+            "pytest",
+            "black",
+        ]
+    },
 )
