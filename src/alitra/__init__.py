@@ -38,10 +38,11 @@ between the two frames.
 from alitra.align_frames import AlignFrames
 from alitra.frame_dataclasses import (
     Euler,
-    Quaternion,
     Point,
     PointList,
+    Quaternion,
     Transform,
     Translation,
 )
 from alitra.frame_transform import FrameTransform
+from alitra.models.map_config import MapConfig
