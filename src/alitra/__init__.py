@@ -45,4 +45,4 @@ from alitra.frame_dataclasses import (
     Translation,
 )
 from alitra.frame_transform import FrameTransform
-from alitra.models.map_config import MapConfig
+from alitra.models.map_config import MapConfig, load_map_config
