@@ -106,8 +106,7 @@ class Euler:
     """Euler angles where (psi,theta,phi) is rotation about the z-,y-, and x- axis respectively as_array and from_array
     are both ordered by rotation about z,y,x. That is [psi,theta,phi]"""
 
-    from_: Literal["robot", "asset"]
-    to_: Literal["robot", "asset"]
+    frame: Literal["robot", "asset"]
     psi: float = 0
     theta: float = 0
     phi: float = 0
@@ -118,13 +117,12 @@ class Euler:
     @staticmethod
     def from_array(
         rotations: np.ndarray,
-        from_: Literal["robot", "asset"],
-        to_: Literal["robot", "asset"],
+        frame: Literal["robot", "asset"],
     ) -> Euler:
         if rotations.shape != (3,):
             raise ValueError("Coordinate_list should have shape (3,)")
         return Euler(
-            psi=rotations[0], theta=rotations[1], phi=rotations[2], from_=from_, to_=to_
+            psi=rotations[0], theta=rotations[1], phi=rotations[2], frame=frame
         )
 
 

@@ -1,14 +1,14 @@
 import numpy as np
 import pytest
 
-from alitra import AlignFrames, Euler, FrameTransform, PointList, Translation, Transform
+from alitra import AlignFrames, Euler, FrameTransform, PointList, Transform, Translation
 
 
 @pytest.mark.parametrize(
     "eul_rot, ref_translations, p_robot,rotation_axes",
     [
         (
-            Euler(psi=np.pi * -0.0, from_="robot", to_="asset"),
+            Euler(psi=np.pi * -0.0, frame="robot"),
             Translation(x=200030, y=10000, from_="robot", to_="asset"),
             PointList.from_array(
                 np.array(
@@ -24,7 +24,7 @@ from alitra import AlignFrames, Euler, FrameTransform, PointList, Translation, T
             "z",
         ),
         (
-            Euler(psi=np.pi / 2, from_="robot", to_="asset"),
+            Euler(psi=np.pi / 2, frame="robot"),
             Translation(x=10, y=0, from_="robot", to_="asset"),
             PointList.from_array(
                 np.array([[5, 0, 0], [5, 2, 0], [7, 5, 0], [3, 5, 0]]),
@@ -33,7 +33,7 @@ from alitra import AlignFrames, Euler, FrameTransform, PointList, Translation, T
             "z",
         ),
         (
-            Euler(phi=np.pi * 0.9, from_="robot", to_="asset"),
+            Euler(phi=np.pi * 0.9, frame="robot"),
             Translation(x=1, y=10, from_="robot", to_="asset"),
             PointList.from_array(
                 np.array([[10, 0, 0], [5, 2, 0], [7, 5, 0], [3, 5, 0]]), frame="robot"
@@ -41,7 +41,7 @@ from alitra import AlignFrames, Euler, FrameTransform, PointList, Translation, T
             "x",
         ),
         (
-            Euler(phi=1 * 0.2, theta=1, psi=0.4, from_="robot", to_="asset"),
+            Euler(phi=1 * 0.2, theta=1, psi=0.4, frame="robot"),
             Translation(x=0, y=10, z=2, from_="robot", to_="asset"),
             PointList.from_array(
                 np.array(
@@ -59,13 +59,13 @@ from alitra import AlignFrames, Euler, FrameTransform, PointList, Translation, T
             "xyz",
         ),
         (
-            Euler(psi=np.pi / 4, from_="robot", to_="asset"),
+            Euler(psi=np.pi / 4, frame="robot"),
             Translation(x=1, y=0, from_="robot", to_="asset"),
             PointList.from_array(np.array([[1, 1, 0], [10, 1, 0]]), frame="robot"),
             "z",
         ),
         (
-            Euler(theta=np.pi * 0.2, from_="robot", to_="asset"),
+            Euler(theta=np.pi * 0.2, frame="robot"),
             Translation(x=1, y=10, z=2, from_="robot", to_="asset"),
             PointList.from_array(
                 np.array([[0, 1, 2], [5, 2, 0], [7, 5, 0], [3, 5, 0]]), frame="robot"
@@ -79,8 +79,8 @@ def test_align_frames(eul_rot, ref_translations, p_robot, rotation_axes):
     transform = Transform.from_euler_ZYX(
         euler=eul_rot,
         translation=ref_translations,
-        from_=eul_rot.from_,
-        to_=eul_rot.to_,
+        from_=ref_translations.from_,
+        to_=ref_translations.to_,
     )
     c_frame_transform = FrameTransform(transform)
     ref_translation_array = ref_translations.as_np_array()

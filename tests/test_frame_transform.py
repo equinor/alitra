@@ -18,7 +18,7 @@ from alitra.frame_transform import FrameTransform
     "eul_rot, ref_translations, p_expected",
     [
         (
-            Euler(psi=0.0, from_="robot", to_="asset"),
+            Euler(psi=0.0, frame="robot"),
             Translation(x=0, y=0, from_="robot", to_="asset"),
             PointList.from_array(
                 np.array(
@@ -33,7 +33,7 @@ from alitra.frame_transform import FrameTransform
             ),
         ),
         (
-            Euler(psi=np.pi * -0.0, from_="robot", to_="asset"),
+            Euler(psi=np.pi * -0.0, frame="robot"),
             Translation(x=10, y=10, from_="robot", to_="asset"),
             PointList.from_array(
                 np.array(
@@ -48,7 +48,7 @@ from alitra.frame_transform import FrameTransform
             ),
         ),
         (
-            Euler(psi=np.pi / 2, from_="robot", to_="asset"),
+            Euler(psi=np.pi / 2, frame="robot"),
             Translation(x=10, y=0, from_="robot", to_="asset"),
             PointList.from_array(
                 np.array(
@@ -63,7 +63,7 @@ from alitra.frame_transform import FrameTransform
             ),
         ),
         (
-            Euler(theta=1 * 0.2, phi=1, psi=0.4, from_="robot", to_="asset"),
+            Euler(theta=1 * 0.2, phi=1, psi=0.4, frame="robot"),
             Translation(x=0, y=10, z=2, from_="robot", to_="asset"),
             PointList.from_array(
                 np.array(
@@ -94,8 +94,8 @@ def test_transform_list_of_points(eul_rot, ref_translations, p_expected):
     transform = Transform.from_euler_ZYX(
         euler=eul_rot,
         translation=ref_translations,
-        from_=eul_rot.from_,
-        to_=eul_rot.to_,
+        from_=ref_translations.from_,
+        to_=ref_translations.to_,
     )
     frame_transform = FrameTransform(transform=transform)
     p_asset = frame_transform.transform_point(p_robot, from_="robot", to_="asset")
@@ -108,7 +108,7 @@ def test_transform_list_of_points(eul_rot, ref_translations, p_expected):
     "eul_rot, ref_translations, p_expected",
     [
         (
-            Euler(psi=math.pi / 2.0, from_="robot", to_="asset"),
+            Euler(psi=math.pi / 2.0, frame="robot"),
             Translation(x=1, y=2, from_="robot", to_="asset"),
             Point.from_array(np.array([-1, 3, 3]), frame="asset"),
         ),
@@ -120,8 +120,8 @@ def test_transform_point(eul_rot, ref_translations, p_expected):
     transform = Transform.from_euler_ZYX(
         euler=eul_rot,
         translation=ref_translations,
-        from_=eul_rot.from_,
-        to_=eul_rot.to_,
+        from_=ref_translations.from_,
+        to_=ref_translations.to_,
     )
     frame_transform = FrameTransform(transform)
     p_asset = frame_transform.transform_point(p_robot, from_="robot", to_="asset")
@@ -135,7 +135,7 @@ def test_no_transformation_when_equal_frames():
     p_expected = Point.from_array(np.array([1, 2, 3]), frame="robot")
 
     transform = Transform.from_euler_ZYX(
-        euler=Euler(psi=1.0, from_="robot", to_="asset"),
+        euler=Euler(psi=1.0, frame="robot"),
         translation=Translation(x=2, y=3, from_="robot", to_="asset"),
         from_="robot",
         to_="asset",
@@ -169,10 +169,10 @@ def test_transform_point_error(from_, to_, error_expected):
         ),
         frame="robot",
     )
-    eul_rot = Euler(psi=0.0, from_="robot", to_="asset")
+    eul_rot = Euler(psi=0.0, frame="robot")
     translation = Translation(x=0, y=0, from_="robot", to_="asset")
     transform = Transform.from_euler_ZYX(
-        euler=eul_rot, translation=translation, from_=eul_rot.from_, to_=eul_rot.to_
+        euler=eul_rot, translation=translation, from_="robot", to_="asset"
     )
 
     frame_transform = FrameTransform(transform)

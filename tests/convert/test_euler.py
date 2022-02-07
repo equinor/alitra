@@ -9,7 +9,7 @@ from alitra.convert.euler import euler_to_quaternion
     "euler, expected",
     [
         (
-            Euler(psi=0, phi=0, theta=0, from_="robot", to_="asset"),
+            Euler(psi=0, phi=0, theta=0, frame="robot"),
             Quaternion(x=0, y=0, z=0, w=1, frame="robot"),
         ),
         (
@@ -17,8 +17,7 @@ from alitra.convert.euler import euler_to_quaternion
                 psi=1.5707963,  # Z
                 theta=0.5235988,  # Y
                 phi=1.0471976,  # X
-                from_="robot",
-                to_="asset",
+                frame="robot",
             ),
             Quaternion(x=0.1830127, y=0.5, z=0.5, w=0.6830127, frame="robot"),
         ),

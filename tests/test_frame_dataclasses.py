@@ -1,14 +1,7 @@
 import numpy as np
 import pytest
 
-from alitra import (
-    Euler,
-    Point,
-    PointList,
-    Transform,
-    Translation,
-    Quaternion,
-)
+from alitra import Euler, Point, PointList, Quaternion, Transform, Translation
 
 
 def test_translation():
@@ -18,7 +11,7 @@ def test_translation():
 
 def test_euler():
     with pytest.raises(ValueError):
-        Euler.from_array(np.array([1, 1]), from_="robot", to_="asset")
+        Euler.from_array(np.array([1, 1]), frame="robot")
 
 
 def test_quaternion():
@@ -38,7 +31,7 @@ def test_point_list():
 
 def test_transform():
     with pytest.raises(ValueError):
-        euler = Euler(from_="robot", to_="asset")
+        euler = Euler(frame="robot")
         translation = Translation(1, 1, from_="robot", to_="asset")
         Transform.from_euler_ZYX(translation, euler=euler, from_="asset", to_="robot")
 
