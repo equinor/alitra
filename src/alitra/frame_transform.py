@@ -69,6 +69,9 @@ class FrameTransform:
         from_: Literal["robot", "asset"],
         to_: Literal["robot", "asset"],
     ) -> Quaternion:
+        if from_ == to_:
+            return quaternion
+
         quaternion_from: Rotation = Rotation.from_quat(quaternion.as_np_array())
 
         if not isinstance(quaternion, Quaternion):
