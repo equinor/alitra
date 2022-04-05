@@ -3,47 +3,47 @@ Alitra makes alignment and transformation between coordinate-frames
 easier by using custom dataclasses
 
 Imagine we have an "asset" with one coordinate-frame and a "robot" with its own
-internal coordinate-frame. We want to transform a point on the robot to a point in the
-asset coordinate-frame.
+internal coordinate-frame. We want to transform a position in the robot coordinate-frame
+to a position in the asset coordinate-frame.
 
 >>> import numpy as np
->>> from alitra.align_frames import AlignFrames
->>> from alitra.frame_dataclasses import Euler, Quaternion, PointList, Translation
->>> from alitra.frame_transform import FrameTransform
+>>> from alitra.models import Positions, Transform, Translation
 
-Setting up rotations, translations and points for transformation
+Setting up rotations, translations and positions for transformation
 
->>> eul_rot = Euler(psi=np.pi / 4, from_="robot", to_="asset").as_np_array()
->>> ref_translations = Translation(x=1, y=0, from_="robot", to_="asset")
->>> p_robot = PointList.from_array(np.array([[1, 1, 0], [10, 1, 0]]), frame="robot")
+>>> robot_frame = Frame("robot")
+>>> asset_frame = Frame("asset")
+>>> euler = np.array([np.pi / 4, 0, 0])
+>>> translation = Translation(x=1, y=0, from_=robot_frame, to_=asset_frame)
+>>> p_robot = Positions.from_array(np.array([[1, 1, 0], [10, 1, 0]]), frame=robot_frame)
 >>> rotation_axes = "z"
 
 Making the transform
 
->>> c_frame_transform = FrameTransform(
-...    eul_rot, ref_translations, from_=eul_rot.from_, to_=eul_rot.to_
+>>> transform = Transform.from_euler_array(
+...    translation=translation, euler=euler, from_=robot_frame, to_=asset_frame
 ... )
 
-Tranform point on robot to a point on the asset
+Tranform position on robot to a position on the asset
 
->>> p_asset = c_frame_transform.transform_point(p_robot, from_="robot", to_="asset")
+>>> p_asset = transform.transform_position(p_robot, from_=robot_frame, to_=asset_frame)
 
-If you have one point in two different frames and the rotation between the axes you can find the transform
+If you have one position in two different frames and the rotation between the axes you can find the transform
 between the two frames.
 
->>> transform = AlignFrames.align_frames(p_robot, p_asset, rotation_axes)
-
+>>> transform = Transform(p_robot, p_asset, rotation_axes)
 """
 
-from alitra.align_frames import AlignFrames
-from alitra.frame_dataclasses import (
-    Euler,
-    Point,
-    PointList,
-    Quaternion,
-    Transform,
+from alitra.alignment import align_maps, align_positions
+from alitra.models import (
+    Bounds,
+    Frame,
+    Map,
+    MapAlignment,
+    Orientation,
+    Pose,
+    Position,
+    Positions,
     Translation,
 )
-from alitra.frame_transform import FrameTransform
-from alitra.models.bounds import Bounds
-from alitra.models.map_config import MapConfig, load_map_config
+from alitra.transform import Transform

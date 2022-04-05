@@ -22,13 +22,14 @@ help(alitra)
 ### Installation from source
 
 ```
-pip install .
+git clone https://github.com/equinor/alitra
+cd alitra
+pip install .[dev]
 ```
 
 You can test whether installation was successfull with pytest
 
 ```
-pip install pytest
 pytest .
 ```
 
@@ -40,15 +41,8 @@ pip install -e /path/to/package
 
 This will install package in _editable_ mode. Convenient for local development
 
-## Components
+### How to use
 
-### Frame transform
-
-Class for transforming coordinates between two coordinates frames. Use custom
-dataclasses for conveniency, and to ensure that no mistakes are made in the transform.
-
-### Align frames
-
-Finds the rotations and translations between two coordinate systems by minimizing the
-matching error given a set of points described in both coordinate frames.
-Run `python examples/example_manual_alignment.py` for a demonstration of its use.
+The tests in this repository can be used as examples
+of how to use the different models and functions. The
+[test_example.py](tests/test_example.py) is a good place to start.

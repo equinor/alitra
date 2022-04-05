@@ -1,40 +1,40 @@
 from dataclasses import dataclass
 
-from alitra.frame_dataclasses import Point
+from .position import Position
 
 
-# Point 1 and 2 should be on the diagonal corners of the bounding cube
 @dataclass
 class Bounds:
-    point1: Point
-    point2: Point
+    """
+    Bounds defines the cube bounds of which the map should be valid inside.
+    Position 1 and 2 should be on the diagonal corners of the bounding cube.
+    """
+
+    position1: Position
+    position2: Position
 
     def __post_init__(self):
-        if self.point1.frame == self.point2.frame:
-            self.frame = self.point1.frame
+        if self.position1.frame == self.position2.frame:
+            self.frame = self.position1.frame
         else:
-            raise FrameException("The frames of the bounding points are not the same")
-        points: list = [self.point1, self.point2]
-        self.x_max = max(point.x for point in points)
-        self.x_min = min(point.x for point in points)
-        self.y_max = max(point.y for point in points)
-        self.y_min = min(point.y for point in points)
-        self.z_max = max(point.z for point in points)
-        self.z_min = min(point.z for point in points)
+            raise TypeError("The frames of the bounding Positions are not the same")
+        positions: list = [self.position1, self.position2]
+        self.x_max = max(position.x for position in positions)
+        self.x_min = min(position.x for position in positions)
+        self.y_max = max(position.y for position in positions)
+        self.y_min = min(position.y for position in positions)
+        self.z_max = max(position.z for position in positions)
+        self.z_min = min(position.z for position in positions)
 
-    def point_within_bounds(self, point: Point) -> bool:
-        if not point.frame == self.frame:
-            raise FrameException(
-                f"The point is in {point.frame} frame and the bounds are in {self.frame} frame"
+    def position_within_bounds(self, position: Position) -> bool:
+        if not position.frame == self.frame:
+            raise ValueError(
+                f"The position is in {position.frame} frame and the bounds are in {self.frame} frame"
             )
-        if point.x < self.x_min or point.x > self.x_max:
+        if position.x < self.x_min or position.x > self.x_max:
             return False
-        if point.y < self.y_min or point.y > self.y_max:
+        if position.y < self.y_min or position.y > self.y_max:
             return False
-        if point.z < self.z_min or point.z > self.z_max:
+        if position.z < self.z_min or position.z > self.z_max:
             return False
         return True
-
-
-class FrameException(Exception):
-    pass

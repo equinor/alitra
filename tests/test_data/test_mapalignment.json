@@ -1,0 +1,95 @@
+{
+    "name": "test_mapalignment",
+    "map_from": {
+        "name": "test_map_robot",
+        "reference_positions": {
+            "positions": [
+                {
+                    "x": 20,
+                    "y": 10,
+                    "z": 0,
+                    "frame": {
+                        "name": "robot"
+                    }
+                },
+                {
+                    "x": 60,
+                    "y": 20,
+                    "z": 0,
+                    "frame": {
+                        "name": "robot"
+                    }
+                },
+                {
+                    "x": 80,
+                    "y": 70,
+                    "z": 0,
+                    "frame": {
+                        "name": "robot"
+                    }
+                }
+            ],
+            "frame": {
+                "name": "robot"
+            }
+        },
+        "frame": {
+            "name": "robot"
+        }
+    },
+    "map_to": {
+        "name": "test_map_asset",
+        "reference_positions": {
+            "positions": [
+                {
+                    "x": 70,
+                    "y": 30,
+                    "z": 0,
+                    "frame": {
+                        "name": "asset"
+                    }
+                },
+                {
+                    "x": 60,
+                    "y": 70,
+                    "z": 0,
+                    "frame": {
+                        "name": "asset"
+                    }
+                },
+                {
+                    "x": 10,
+                    "y": 90,
+                    "z": 0,
+                    "frame": {
+                        "name": "asset"
+                    }
+                }
+            ],
+            "frame": {
+                "name": "asset"
+            }
+        },
+        "frame": {
+            "name": "asset"
+        },
+        "bounds": {
+            "position1": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "frame": {
+                    "name": "asset"
+                }
+            },
+            "position2": {
+                "x": 100,
+                "y": 100,
+                "z": 100,
+                "frame": {
+                    "name": "asset"
+                }
+            }
+        }
+    }
+}
