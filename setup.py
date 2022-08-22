@@ -25,5 +25,5 @@ setup(
     include_package_data=True,
     install_requires=["scipy", "numpy", "dacite"],
     python_requires=">=3.8",
-    extras_require={"dev": ["pytest", "black", "mypy"]},
+    extras_require={"dev": ["pytest", "black", "mypy", "pre-commit"]},
 )
