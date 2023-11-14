@@ -41,6 +41,12 @@ pip install -e /path/to/package
 
 This will install package in _editable_ mode. Convenient for local development
 
+### Contributing
+
+We welcome all kinds of contributions, including code, bug reports, issues, feature requests, and documentation. The
+preferred way of submitting a contribution is to either make an [issue](https://github.com/equinor/isar/issues) on
+GitHub or by forking the project on GitHub and making a pull requests.
+
 ### How to use
 
 The tests in this repository can be used as examples

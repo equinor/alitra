@@ -41,7 +41,6 @@ def test_align_positions_translation_only():
 
 
 def test_align_positions_one_dimension():
-
     expected_rotation = np.array([np.pi / 2, 0, 0])
     expected_translation = np.array([0, 0, 0])
 
@@ -78,7 +77,6 @@ def test_align_positions_one_dimension():
 
 
 def test_align_positions_three_dimensions():
-
     expected_rotation = np.array([np.pi / 2, np.pi / 4, np.pi / 2])
     expected_translation = np.array([0, 0, 0])
     hyp = np.sqrt(1 / 2)
@@ -116,7 +114,6 @@ def test_align_positions_three_dimensions():
 
 
 def test_align_positions_rotation_and_translation():
-
     expected_rotation = np.array([np.pi / 2, 0, 0])
     expected_translation = np.array([2, -1, 0])
 
