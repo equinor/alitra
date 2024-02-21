@@ -41,3 +41,9 @@ class Pose:
             Orientation.from_quat_array(quat_array, frame),
             frame,
         )
+
+    def __str__(self):
+        """
+        :return: Unique string representation of the pose
+        """
+        return "pos:" + str(self.position) + ", ori: " + str(self.orientation)

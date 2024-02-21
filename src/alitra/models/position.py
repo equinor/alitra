@@ -71,3 +71,9 @@ class Positions:
                 Position(x=position[0], y=position[1], z=position[2], frame=frame)
             )
         return Positions(positions=positions, frame=frame)
+
+    def __str__(self):
+        """
+        :return: Unique string representation of the position, ignoring the frame
+        """
+        return "(" + str(self.x) + "," + str(self.y) + "," + str(self.z) + ")"

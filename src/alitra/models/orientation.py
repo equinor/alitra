@@ -91,3 +91,19 @@ class Orientation:
         :return: Orientation object
         """
         return Orientation(*rotation.as_quat(), frame=frame)  # type: ignore
+
+    def __str__(self):
+        """
+        :return: Unique string representation of the orientation, ignoring the frame
+        """
+        return (
+            "["
+            + str(self.x)
+            + ","
+            + str(self.y)
+            + ","
+            + str(self.z)
+            + ","
+            + str(self.w)
+            + "]"
+        )
