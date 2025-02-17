@@ -9,7 +9,7 @@ on:
     # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
     # In a public repository, scheduled workflows are automatically disabled when no
     # repository activity has occurred in 60 days
-    - cron: "55 13 * * 1-5" # At 06:05 on every day-of-week from Monday through Friday
+    - cron: "5 6 * * 1-5" # At 06:05 on every day-of-week from Monday through Friday
 
 jobs:
   compile-requirements:
