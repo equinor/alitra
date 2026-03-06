@@ -85,7 +85,7 @@ def align_positions(
     translations: Translation = Translation.from_array(
         np.mean(
             positions_to.to_array() - rotation.apply(positions_from.to_array()),
-            axis=0,  # type:ignore
+            axis=0,  # type: ignore
         ),
         from_=positions_from.frame,
         to_=positions_to.frame,
