@@ -6,7 +6,7 @@
 #
 dacite==1.9.2
     # via alitra (pyproject.toml)
-numpy==2.4.2
+numpy==2.4.3
     # via
     #   alitra (pyproject.toml)
     #   scipy
