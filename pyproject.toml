@@ -27,7 +27,7 @@ dynamic = ["version"]
 repository = "https://github.com/equinor/alitra.git"
 
 [project.optional-dependencies]
-dev = ["black", "mypy", "pre-commit", "pytest"]
+dev = ["black", "mypy", "pytest"]
 
 [tool.setuptools_scm]
 # This section is empty but required for dynamic versioning.
