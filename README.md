@@ -1,6 +1,6 @@
 # Alitra
 
-WIP Library for ALIgnment and TRAnsformation between fixed coordinate frames. The transform
+Library for ALIgnment and TRAnsformation between fixed coordinate frames. The transform
 is described by a translation and a homogeneous rotation.
 
 Developed for transforming between the fixed local coordinate-frame and the asset-fixed
