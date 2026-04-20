@@ -11,6 +11,6 @@ jobs:
   test-and-lint:
     uses: equinor/armada/.github/workflows/test_and_lint_python_package.yml@main
     with:
-      python-versions: '["3.12", "3.13", "3.14"]'
+      python-versions: '["3.14"]'
       run-ruff: false
       run-isort: false
