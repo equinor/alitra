@@ -30,7 +30,7 @@ uv sync --extra dev
 You can test whether installation was successful with pytest
 
 ```
-uv run pytest .
+uv run pytest
 ```
 
 ## Dependencies
@@ -50,8 +50,8 @@ uv lock --upgrade
 ### Contributing
 
 We welcome all kinds of contributions, including code, bug reports, issues, feature requests, and documentation. The
-preferred way of submitting a contribution is to either make an [issue](https://github.com/equinor/isar/issues) on
-GitHub or by forking the project on GitHub and making a pull requests.
+preferred way of submitting a contribution is to either make an [issue](https://github.com/equinor/alitra/issues) on
+GitHub or by forking the project on GitHub and making a pull request.
 
 ### How to use
 
