@@ -1,3 +1,5 @@
+name: Test and lint python package
+
 on:
   push:
     branches:
@@ -6,6 +8,10 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   test-and-lint:
