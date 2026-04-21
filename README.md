@@ -24,22 +24,28 @@ help(alitra)
 ```
 git clone https://github.com/equinor/alitra
 cd alitra
-pip install .[dev]
+uv sync --extra dev
 ```
 
-You can test whether installation was successfull with pytest
+You can test whether installation was successful with pytest
 
 ```
-pytest .
+uv run pytest .
 ```
 
-### Local development
+## Dependencies
+
+The dependencies used for this package are listed in `pyproject.toml` and pinned in `uv.lock`. This ensures our builds are predictable and deterministic. This project uses [uv](https://docs.astral.sh/uv/) for dependency management:
 
 ```
-pip install -e /path/to/package
+uv lock
 ```
 
-This will install package in _editable_ mode. Convenient for local development
+To update the dependencies to the latest versions, run:
+
+```
+uv lock --upgrade
+```
 
 ### Contributing
 
