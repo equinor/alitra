@@ -1,4 +1,4 @@
-name: Update Dependencies
+name: Compile python requirements and create PR
 
 on:
   push:
