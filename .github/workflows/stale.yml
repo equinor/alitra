@@ -21,7 +21,7 @@ jobs:
       - name: Close Stale Issues
         uses: actions/stale@v9.0.0
         with:
-          repo-token: ${{ secrets.STALE_ISSUE_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           stale-issue-label: "stale"
           stale-pr-label: "stale"
           days-before-pr-stale: 30
