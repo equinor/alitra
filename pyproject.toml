@@ -20,14 +20,19 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Physics",
     "Topic :: Software Development :: Libraries",
 ]
-dependencies = ["dacite", "scipy", "numpy"]
+dependencies = [
+    "dacite",
+    "scipy",
+    "numpy",
+]
 dynamic = ["version"]
 
 [project.urls]
 repository = "https://github.com/equinor/alitra.git"
 
 [project.optional-dependencies]
-dev = ["black", "mypy", "pytest"]
+image-alignment = ["opencv-python>=5.0.0.93"]
+dev = ["black", "mypy", "pytest", "opencv-python>=5.0.0.93"]
 
 [tool.setuptools_scm]
 # This section is empty but required for dynamic versioning.

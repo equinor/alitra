@@ -47,3 +47,12 @@ from alitra.models import (
     Translation,
 )
 from alitra.transform import Transform
+
+try:
+    # Requires the optional "image-alignment" extra (pulls in opencv-python).
+    from alitra.image_alignment import (
+        align_two_images_orb_bf_cv2,
+        align_two_images_translation_cv2,
+    )
+except ImportError:
+    pass
