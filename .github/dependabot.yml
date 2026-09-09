@@ -1,0 +1,34 @@
+version: 2
+updates:
+  - package-ecosystem: uv
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    allow:
+      - dependency-type: all
+    open-pull-requests-limit: 5
+    cooldown:
+      default-days: 3
+    groups:
+      python-patch-minor:
+        patterns:
+          - "*"
+        update-types:
+          - patch
+          - minor
+      python-major:
+        patterns:
+          - "*"
+        update-types:
+          - major
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      github-actions:
+        patterns:
+          - "*"
