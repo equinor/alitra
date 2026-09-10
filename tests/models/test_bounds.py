@@ -47,6 +47,6 @@ def test_distance_to_position(robot_frame, position, expected_distance):
 
 
 def test_distance_to_position_wrong_frame(default_bounds, asset_frame):
-    pos = Position(0.5, 0.5, 0.5, asset_frame) # The default_bounds is in robot_frame
+    pos = Position(0.5, 0.5, 0.5, asset_frame)  # The default_bounds is in robot_frame
     with pytest.raises(ValueError):
         default_bounds.distance_to_position(pos)
