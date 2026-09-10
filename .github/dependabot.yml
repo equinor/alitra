@@ -11,17 +11,9 @@ updates:
     cooldown:
       default-days: 3
     groups:
-      python-patch-minor:
+      python-dependencies:
         patterns:
           - "*"
-        update-types:
-          - patch
-          - minor
-      python-major:
-        patterns:
-          - "*"
-        update-types:
-          - major
   - package-ecosystem: github-actions
     directory: /
     schedule:
