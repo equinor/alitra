@@ -1,3 +1,4 @@
+import math
 from dataclasses import dataclass
 
 from .position import Position
@@ -38,3 +39,19 @@ class Bounds:
         if position.z < self.z_min or position.z > self.z_max:
             return False
         return True
+
+    def distance_to_position(self, position: Position) -> float:
+        """
+        The Euclidean distance from the position to the nearest point on the
+        bounding cube. Zero if the position is within the bounds.
+        """
+        if not position.frame == self.frame:
+            raise ValueError(
+                f"The position is in {position.frame} frame and the bounds are in {self.frame} frame"
+            )
+        distance_x: float = max(self.x_min - position.x, 0.0, position.x - self.x_max)
+        distance_y: float = max(self.y_min - position.y, 0.0, position.y - self.y_max)
+        distance_z: float = max(self.z_min - position.z, 0.0, position.z - self.z_max)
+        return math.sqrt(
+            distance_x * distance_x + distance_y * distance_y + distance_z * distance_z
+        )
