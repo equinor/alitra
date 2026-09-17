@@ -118,6 +118,8 @@ def align_two_images_orb_bf_cv2(
     reference_image: NDArray[np.uint8],
     source_image: NDArray[np.uint8],
     roi_polygon: list[tuple[int, int]],
+    nfeatures: int = 1000,
+    ransac_reproj_threshold: float = 3.0,
 ) -> tuple[list[tuple[int, int]] | None, NDArray[np.uint8]]:
     """
     Align reference image to source image and transform the polygon accordingly.
@@ -129,6 +131,14 @@ def align_two_images_orb_bf_cv2(
     :param reference_image: The reference image (source of polygon)
     :param source_image: The source image (target alignment)
     :param roi_polygon: Polygon points defined in reference image coordinates
+    :param nfeatures: Maximum number of ORB keypoints to detect per image. Higher
+        values give the matcher a larger candidate pool, which helps on large,
+        high-resolution images with sizeable dynamic background regions (e.g.
+        sky/water), at the cost of more compute. Tune per use case/resolution.
+    :param ransac_reproj_threshold: Max reprojection error (pixels) for a match to
+        be counted as a homography inlier by RANSAC. Larger values tolerate more
+        non-planar depth/parallax error but also let more incorrect matches (e.g.
+        from repetitive textures) through as false inliers. Tune per use case/resolution.
     :return: tuple (warped_polygon, aligned_reference_image)
         warped_polygon: Polygon transformed to source image coordinates, clamped to
             valid pixel indices, or None if it falls entirely outside the source image
@@ -142,7 +152,7 @@ def align_two_images_orb_bf_cv2(
     gray_source = _to_grayscale(source_image)
 
     # Detect ORB keypoints and compute descriptors
-    orb = cv2.ORB_create(nfeatures=1000)  # type: ignore
+    orb = cv2.ORB_create(nfeatures=nfeatures)  # type: ignore
     keypoints_ref, descriptors_ref = orb.detectAndCompute(gray_reference, None)
     keypoints_src, descriptors_src = orb.detectAndCompute(gray_source, None)
 
@@ -151,25 +161,32 @@ def align_two_images_orb_bf_cv2(
         # Return original polygon and reference image (fallback)
         return roi_polygon, reference_image
 
-    # Create a BFMatcher object
-    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+    # Create a BFMatcher object. crossCheck must be disabled to get the two
+    # nearest neighbors per descriptor, which Lowe's ratio test below needs.
+    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
 
-    # Match descriptors
-    matches = bf.match(descriptors_ref, descriptors_src)
+    # Match each reference descriptor to its two nearest source descriptors
+    knn_matches = bf.knnMatch(descriptors_ref, descriptors_src, k=2)
 
-    if len(matches) < 4:
-        logger.error(f"Insufficient matches found: {len(matches)}. Need at least 4.")
+    # Lowe's ratio test: keep a match only if it is clearly better than the
+    # second-best candidate. Repetitive textures (e.g. chain-link fence mesh)
+    # otherwise produce many equally-good, geometrically-wrong matches that a
+    # plain top-N-by-distance selection cannot detect or reject.
+    ratio_threshold = 0.75
+    good_matches = [
+        m
+        for m, n in (pair for pair in knn_matches if len(pair) == 2)
+        if m.distance < ratio_threshold * n.distance
+    ]
+
+    if len(good_matches) < 4:
+        logger.error(
+            f"Insufficient unambiguous matches found: {len(good_matches)}. Need at least 4."
+        )
         return roi_polygon, reference_image
 
-    # Sort them in order of distance (best matches first)
-    matches = sorted(matches, key=lambda x: x.distance)
-
-    # Take only the best matches (top 50% or max 100)
-    num_good_matches = min(len(matches), max(len(matches) // 2, 100))
-    good_matches = matches[:num_good_matches]
-
     logger.info(
-        f"Using {num_good_matches} good matches out of {len(matches)} total matches"
+        f"Using {len(good_matches)} unambiguous matches out of {len(knn_matches)} candidate matches"
     )
 
     # Extract location of good matches
@@ -183,7 +200,11 @@ def align_two_images_orb_bf_cv2(
     # Calculate homography to transform REFERENCE image TO SOURCE image coordinates
     # Note: points_ref -> points_src
     H, mask = cv2.findHomography(
-        points_ref, points_src, cv2.RANSAC, ransacReprojThreshold=3.0, confidence=0.99
+        points_ref,
+        points_src,
+        cv2.RANSAC,
+        ransacReprojThreshold=ransac_reproj_threshold,
+        confidence=0.99,
     )
 
     # Check if homography is valid
