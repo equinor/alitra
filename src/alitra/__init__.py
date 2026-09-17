@@ -24,7 +24,7 @@ Making the transform
 ...    translation=translation, euler=euler, from_=robot_frame, to_=asset_frame
 ... )
 
-Tranform position on robot to a position on the asset
+Transform position on robot to a position on the asset
 
 >>> p_asset = transform.transform_position(p_robot, from_=robot_frame, to_=asset_frame)
 

@@ -16,7 +16,7 @@ from .models.translation import Translation
 @dataclass
 class Transform:
     """
-    A transform object that describe the transformation between two frames.
+    A transform object that describes the transformation between two frames.
     Contains a scipy rotation object, a translation and two frames.
     Can be created from euler array or quaternion array. Translations must be
     expressed in the (to_) frame
