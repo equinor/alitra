@@ -173,6 +173,6 @@ def _check_rsme_treshold(
     rsm_distance = np.mean(norm(transform_distance_error, axis=1))
     if rsm_distance > rsmd_threshold:
         raise ValueError(
-            f"Root mean square error {rsm_distance:.4f} exceeds treshold {rsmd_threshold}"
+            f"Root mean square error {rsm_distance:.4f} exceeds threshold {rsmd_threshold}"
         )
     return rsmd_threshold
