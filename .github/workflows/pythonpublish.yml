@@ -1,19 +1,14 @@
 name: Upload Python Package
 
+permissions:
+  contents: read
+
 on:
   release:
     types: [created]
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-
-      - name: Build and publish
-        run: |
-          uv build
-          uv publish --token ${{ secrets.PYPI_TOKEN }}
+  publish:
+    uses: equinor/armada/.github/workflows/publish_python_package.yml@main
+    secrets:
+      PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
